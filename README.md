@@ -1,1 +1,1 @@
-# react-design-marg-components
+# design-marg
