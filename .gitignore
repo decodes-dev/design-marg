@@ -1,0 +1,14 @@
+# Node dependencies
+node_modules/
+npm-debug.log
+
+# TypeScript
+*.tsbuildinfo
+dist/
+
+# IDE specific (e.g., Visual Studio Code)
+.vscode/
+
+# Operating System
+.DS_Store
+Thumbs.db
