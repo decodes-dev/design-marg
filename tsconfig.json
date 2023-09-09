@@ -12,6 +12,7 @@
 
     /* Type Checking */
     "strict": true /* Enable all strict type-checking options. */,
+    "declaration": true /* Generate .d.ts files from TypeScript and JavaScript files in your project. */,
 
     /* Completeness */
     "skipLibCheck": true /* Skip type checking all .d.ts files. */

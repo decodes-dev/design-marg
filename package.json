@@ -1,5 +1,5 @@
 {
-  "name": "react-design-marg-components",
+  "name": "design-marg",
   "version": "1.0.5",
   "description": "",
   "main": "dist/index.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/decodes-dev/react-design-marg-components.git"
+    "url": "git+https://github.com/decodes-dev/design-marg.git"
   },
   "author": "Arshdeep Singh <arsh@decodes.dev>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/decodes-dev/react-design-marg-components/issues"
+    "url": "https://github.com/decodes-dev/design-marg/issues"
   },
-  "homepage": "https://github.com/decodes-dev/react-design-marg-components#readme",
+  "homepage": "https://github.com/decodes-dev/design-marg#readme",
   "devDependencies": {
     "@types/node": "^20.5.9",
     "@types/react": "^18.0.1",
