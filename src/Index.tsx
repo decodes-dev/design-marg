@@ -1,7 +1,5 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import "./styles.css";
-
-const scaleFactor = window.innerWidth / 1400;
 
 const roundRect = (
   ctx: CanvasRenderingContext2D,
@@ -31,8 +29,9 @@ const roundRect = (
 
 const Dot = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  let rectDefaultWidth = 32 / scaleFactor;
-  let rectDefaultHeight = 32 / scaleFactor;
+
+  let rectDefaultWidth = 32;
+  let rectDefaultHeight = 32;
   const scale = useRef({ width: rectDefaultWidth, height: rectDefaultHeight });
   const pos = useRef({ x: 0, y: 0 });
   const targetPos = useRef({ x: 0, y: 0 }); // the target position (cursor's position)
@@ -133,10 +132,10 @@ const Dot = () => {
         outsideCanvas ? 0 : rectWidth,
         outsideCanvas ? 0 : rectHeight,
         outsideCanvas ? 0 : radius,
-        isDotHoveringButton ? 1 : scaleFactor
+        1
       );
       context.strokeStyle = dotColor;
-      context.lineWidth = 3 * scaleFactor;
+      context.lineWidth = 3;
 
       if (!hideDot) {
         context.stroke();
@@ -145,14 +144,26 @@ const Dot = () => {
       animationFrameId = window.requestAnimationFrame(updateDotPosition);
     };
 
+    const handleResize = () => {
+      const canvas = canvasRef.current;
+      if (canvas) {
+        canvas.width = window.innerWidth * window.devicePixelRatio;
+        canvas.height = window.innerHeight * window.devicePixelRatio;
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
     window.addEventListener("mousemove", updateMousePosition);
     document.addEventListener("mouseleave", handleMouseLeave);
     document.addEventListener("mouseenter", handleMouseEnter);
     animationFrameId = window.requestAnimationFrame(updateDotPosition);
+
     return () => {
       window.removeEventListener("mousemove", updateMousePosition);
       document.removeEventListener("mouseleave", handleMouseLeave);
       document.removeEventListener("mouseenter", handleMouseEnter);
+      window.removeEventListener("resize", handleResize);
+
       if (animationFrameId) {
         window.cancelAnimationFrame(animationFrameId);
       }
