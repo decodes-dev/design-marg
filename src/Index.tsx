@@ -27,7 +27,14 @@ const roundRect = (
   ctx.closePath();
 };
 
-const Dot = () => {
+type RingProps = {
+  ringColor?: string;
+  surroundRingTo?: string;
+  defaultRingSize?: number; // in px
+  hideRingWhenHoveredOver?: string;
+};
+
+const Ring = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   let rectDefaultWidth = 32;
@@ -37,7 +44,7 @@ const Dot = () => {
   const targetPos = useRef({ x: 0, y: 0 }); // the target position (cursor's position)
   const targetRectPos = useRef({ x: 0, y: 0 });
 
-  const lerpSpeed = 0.4; // adjust this to change the speed of the dot
+  const lerpSpeed = 0.4; // adjust this to change the speed of the ring
 
   let outsideCanvas = false;
 
@@ -60,15 +67,15 @@ const Dot = () => {
     let rectX = pos.current.x - rectWidth / 2;
     let rectY = pos.current.y - rectWidth / 2 - 2;
 
-    let isDotHoveringButton = false;
-    let hideDot = false;
+    let isRingHoveringButton = false;
+    let hideRing = false;
     let rect: any;
 
     let canvasRect = canvas.getBoundingClientRect();
     let scaleX = canvas.width / canvasRect.width; // relationship bitmap vs. element for X
     let scaleY = canvas.height / canvasRect.height; // relationship bitmap vs. element for Y
 
-    let dotColor = "#030F26";
+    let ringColor = "#030F26";
 
     const updateMousePosition = (event: any) => {
       canvasRect = canvas.getBoundingClientRect();
@@ -80,16 +87,16 @@ const Dot = () => {
 
       targetPos.current = { x, y };
 
-      isDotHoveringButton = event.target.closest(".absorb-dot") !== null;
-      hideDot = event.target.closest(".hide-dot") !== null;
+      isRingHoveringButton = event.target.closest(".absorb-ring") !== null;
+      hideRing = event.target.closest(".hide-ring") !== null;
 
       rect = event.target.getBoundingClientRect();
     };
 
     let animationFrameId: any = null;
 
-    const updateDotPosition = () => {
-      if (isDotHoveringButton) {
+    const updateRingPosition = () => {
+      if (isRingHoveringButton) {
         targetRectPos.current = {
           x: (rect.left - canvasRect.left) * scaleX,
           y: (rect.top - canvasRect.top) * scaleY,
@@ -101,13 +108,13 @@ const Dot = () => {
         };
       }
 
-      // lerp the scale and position of the dot
+      // lerp the scale and position of the ring
       scale.current.width +=
-        ((isDotHoveringButton ? rect.width * scaleX : rectDefaultWidth) -
+        ((isRingHoveringButton ? rect.width * scaleX : rectDefaultWidth) -
           scale.current.width) *
         lerpSpeed;
       scale.current.height +=
-        ((isDotHoveringButton ? rect.height * scaleY : rectDefaultHeight) -
+        ((isRingHoveringButton ? rect.height * scaleY : rectDefaultHeight) -
           scale.current.height) *
         lerpSpeed;
 
@@ -127,21 +134,21 @@ const Dot = () => {
 
       roundRect(
         context,
-        isDotHoveringButton ? rectX : rectX + rectDefaultWidth / 10,
-        isDotHoveringButton ? rectY : rectY + rectDefaultHeight / 8,
+        isRingHoveringButton ? rectX : rectX + rectDefaultWidth / 10,
+        isRingHoveringButton ? rectY : rectY + rectDefaultHeight / 8,
         outsideCanvas ? 0 : rectWidth,
         outsideCanvas ? 0 : rectHeight,
         outsideCanvas ? 0 : radius,
         1
       );
-      context.strokeStyle = dotColor;
+      context.strokeStyle = ringColor;
       context.lineWidth = 3;
 
-      if (!hideDot) {
+      if (!hideRing) {
         context.stroke();
       }
 
-      animationFrameId = window.requestAnimationFrame(updateDotPosition);
+      animationFrameId = window.requestAnimationFrame(updateRingPosition);
     };
 
     const handleResize = () => {
@@ -156,7 +163,7 @@ const Dot = () => {
     window.addEventListener("mousemove", updateMousePosition);
     document.addEventListener("mouseleave", handleMouseLeave);
     document.addEventListener("mouseenter", handleMouseEnter);
-    animationFrameId = window.requestAnimationFrame(updateDotPosition);
+    animationFrameId = window.requestAnimationFrame(updateRingPosition);
 
     return () => {
       window.removeEventListener("mousemove", updateMousePosition);
@@ -173,11 +180,11 @@ const Dot = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="canvas-for-cursor-dot"
+      className="canvas-for-cursor-ring"
       width={window.innerWidth * window.devicePixelRatio}
       height={window.innerHeight * window.devicePixelRatio}
     />
   );
 };
 
-export default Dot;
+export default Ring;
