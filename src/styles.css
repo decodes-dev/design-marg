@@ -6,9 +6,11 @@
   z-index: 100;
   width: 100%;
   height: 100%;
+}
 
-  /* Hide canvas on small screens */
-  @media (max-width: 930px) {
+/* Hide canvas on small screens */
+@media (max-width: 930px) {
+  .canvas-for-cursor-ring {
     display: none;
   }
 }

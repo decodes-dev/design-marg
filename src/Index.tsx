@@ -31,10 +31,14 @@ type RingProps = {
   ringColor?: string;
   surroundRingTo?: string;
   defaultRingSize?: number; // in px
-  hideRingWhenHoveredOver?: string;
+  hideRingFor?: string;
 };
 
-const Ring = () => {
+const Ring = ({
+  ringColor = "#030F26",
+  surroundRingTo = "surround-ring",
+  hideRingFor = "hide-ring",
+}: RingProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   let rectDefaultWidth = 32;
@@ -75,8 +79,6 @@ const Ring = () => {
     let scaleX = canvas.width / canvasRect.width; // relationship bitmap vs. element for X
     let scaleY = canvas.height / canvasRect.height; // relationship bitmap vs. element for Y
 
-    let ringColor = "#030F26";
-
     const updateMousePosition = (event: any) => {
       canvasRect = canvas.getBoundingClientRect();
       scaleX = canvas.width / canvasRect.width; // relationship bitmap vs. element for X
@@ -87,8 +89,9 @@ const Ring = () => {
 
       targetPos.current = { x, y };
 
-      isRingHoveringButton = event.target.closest(".absorb-ring") !== null;
-      hideRing = event.target.closest(".hide-ring") !== null;
+      isRingHoveringButton =
+        event.target.closest("." + surroundRingTo) !== null;
+      hideRing = event.target.closest("." + hideRingFor) !== null;
 
       rect = event.target.getBoundingClientRect();
     };
