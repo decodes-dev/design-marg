@@ -13,6 +13,11 @@
     /* Type Checking */
     "strict": true /* Enable all strict type-checking options. */,
     "declaration": true /* Generate .d.ts files from TypeScript and JavaScript files in your project. */,
+    "types": [
+      "node",
+      "react",
+      "react-dom"
+    ] /* Type declaration files to be included in compilation. */,
 
     /* Completeness */
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
