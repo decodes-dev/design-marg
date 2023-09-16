@@ -1,31 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 import "./styles.css";
-
-const roundRect = (
-  ctx: CanvasRenderingContext2D,
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-  radius: number,
-  scaleFactor: number
-) => {
-  width *= scaleFactor;
-  height *= scaleFactor;
-  radius *= scaleFactor;
-
-  ctx.beginPath();
-  ctx.moveTo(x + radius, y);
-  ctx.lineTo(x + width - radius, y);
-  ctx.arcTo(x + width, y, x + width, y + radius, radius);
-  ctx.lineTo(x + width, y + height - radius);
-  ctx.arcTo(x + width, y + height, x + width - radius, y + height, radius);
-  ctx.lineTo(x + radius, y + height);
-  ctx.arcTo(x, y + height, x, y + height - radius, radius);
-  ctx.lineTo(x, y + radius);
-  ctx.arcTo(x, y, x + radius, y, radius);
-  ctx.closePath();
-};
+import { roundRect } from "./utils/GLShapes";
 
 type RingProps = {
   ringColor?: string;
@@ -41,8 +16,10 @@ const Ring = ({
 }: RingProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  let rectDefaultWidth = 32;
-  let rectDefaultHeight = 32;
+  console.log(window.screen.width, window.screen.height);
+
+  let rectDefaultWidth = 44;
+  let rectDefaultHeight = 44;
   const scale = useRef({ width: rectDefaultWidth, height: rectDefaultHeight });
   const pos = useRef({ x: 0, y: 0 });
   const targetPos = useRef({ x: 0, y: 0 }); // the target position (cursor's position)
@@ -155,10 +132,13 @@ const Ring = ({
     };
 
     const handleResize = () => {
+      // This function resets the Canvas size to the window size
+      // This will prevent the Canvas from being stretched on browser resize
       const canvas = canvasRef.current;
+
       if (canvas) {
-        canvas.width = window.innerWidth * window.devicePixelRatio;
-        canvas.height = window.innerHeight * window.devicePixelRatio;
+        canvas.width = window.innerWidth * 2;
+        canvas.height = window.innerHeight * 2;
       }
     };
 
@@ -184,8 +164,8 @@ const Ring = ({
     <canvas
       ref={canvasRef}
       className="canvas-for-cursor-ring"
-      width={window.innerWidth * window.devicePixelRatio}
-      height={window.innerHeight * window.devicePixelRatio}
+      width={window.innerWidth * 2}
+      height={window.innerHeight * 2}
     />
   );
 };
